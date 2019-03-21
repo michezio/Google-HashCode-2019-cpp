@@ -13,7 +13,7 @@
 using namespace std;
 
 
-vector<Photo> generatePhotoList(string inputPath)
+vector<Photo> generatePhotoList(const string &inputPath)
 {
 	int processed = 0;
 	ifstream inputFile(inputPath);
@@ -131,7 +131,7 @@ vector<Slide> generateSlideshow(vector<Photo> &photos)
 
 
 
-int calculateScore(vector<Slide> const &slideshow)
+int calculateScore(const vector<Slide> &slideshow)
 {
 	int score = 0;
 	for (unsigned int i = 0; i < slideshow.size()-1; ++i)
@@ -142,7 +142,7 @@ int calculateScore(vector<Slide> const &slideshow)
 	return score;
 }
 
-void writeOutputFile(string outputPath, vector<Slide> const &slideshow)
+void writeOutputFile(const string &outputPath, const vector<Slide> &slideshow)
 {
 	ofstream outputFile(outputPath);
 	outputFile << slideshow.size() << endl;

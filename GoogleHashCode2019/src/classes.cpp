@@ -9,7 +9,7 @@ using namespace std;
 
 unordered_map<string, ULONG> taglist;
 
-ULONG tag2code(string tag)
+ULONG tag2code(const string &tag)
 {
 	ULONG code = (ULONG)taglist.size();
 	unordered_map<string, ULONG>::iterator it = taglist.find(tag);
@@ -19,7 +19,7 @@ ULONG tag2code(string tag)
 }
 
 
-Photo::Photo(ULONG id, string line)
+Photo::Photo(ULONG id, const string &line)
 {
 	this->id = id;
 	used = false;
@@ -57,7 +57,7 @@ void Slide::addVertical(const Photo &photo)
 	this->mergeTags(photo.tags);
 }
 
-V_ULONG Slide::mergeTags(const V_ULONG t1, const V_ULONG t2)
+V_ULONG Slide::mergeTags(const V_ULONG &t1, const V_ULONG &t2)
 {
 	V_ULONG merged;
 	merged.reserve(t1.size() + t2.size());
@@ -84,12 +84,12 @@ V_ULONG Slide::mergeTags(const V_ULONG t1, const V_ULONG t2)
 	return merged;
 }
 
-inline void Slide::mergeTags(V_ULONG array)
+inline void Slide::mergeTags(const V_ULONG &array)
 {
 	this->tags = Slide::mergeTags(this->tags, array);
 }
 
-int Slide::intersectionSize(const V_ULONG v1, const V_ULONG v2)
+int Slide::intersectionSize(const V_ULONG &v1, const V_ULONG &v2)
 {
 	UINT index_a = 0;
 	UINT index_b = 0;
@@ -112,7 +112,7 @@ int Slide::intersectionSize(const V_ULONG v1, const V_ULONG v2)
 	return equals;
 }
 
-inline int Slide::intersectionSize(V_ULONG array) const
+inline int Slide::intersectionSize(const V_ULONG &array) const
 {
 	return Slide::intersectionSize(this->tags, array);
 }
@@ -122,7 +122,7 @@ int Slide::preview(const Photo &photo, const Slide &slide)
 	return Slide::score(Slide::mergeTags(this->tags, photo.tags), slide.tags);
 }
 
-int Slide::score(const V_ULONG t1, const V_ULONG t2)
+int Slide::score(const V_ULONG &t1, const V_ULONG &t2)
 {
 	UINT int_size = Slide::intersectionSize(t1, t2);
 	if (int_size == 0) return 0;

@@ -8,6 +8,6 @@
 using namespace std;
 
 int calculateScore(const vector<Slide> &slideshow);
-void writeOutputFile(string outputPath, const vector<Slide> &slideshow);
-vector<Photo> generatePhotoList(string inputPath);
+void writeOutputFile(const string &outputPath, const vector<Slide> &slideshow);
+vector<Photo> generatePhotoList(const string &inputPath);
 vector<Slide> generateSlideshow(vector<Photo> &photos);

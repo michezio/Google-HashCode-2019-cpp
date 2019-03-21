@@ -19,7 +19,7 @@ public:
 	bool isHorizontal;
 	V_ULONG tags;
 	bool used;
-	Photo(ULONG id, string line);
+	Photo(ULONG id, const string &line);
 };
 
 class Slide
@@ -33,14 +33,14 @@ public:
 	void addVertical(const Photo &photo);
 	inline int pointsTo(const Slide &slide) const;
 	int preview(const Photo &photo, const Slide &slide);
-	static int score(const V_ULONG t1, const V_ULONG t2);
+	static int score(const V_ULONG &t1, const V_ULONG &t2);
 	string toString() const;
 
 private:
 	ULONG photo1_id;
 	ULONG photo2_id;
-	void mergeTags(V_ULONG array);
-	static V_ULONG mergeTags(const V_ULONG t1, const V_ULONG t2);
-	inline int intersectionSize(V_ULONG array) const;
-	static int intersectionSize(const V_ULONG v1, const V_ULONG v2);
+	void mergeTags(const V_ULONG &array);
+	static V_ULONG mergeTags(const V_ULONG &t1, const V_ULONG &t2);
+	inline int intersectionSize(const V_ULONG &array) const;
+	static int intersectionSize(const V_ULONG &v1, const V_ULONG &v2);
 };
