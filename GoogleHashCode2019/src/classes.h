@@ -33,6 +33,7 @@ public:
 	void addVertical(const Photo &photo);
 	inline int pointsTo(const Slide &slide) const;
 	int preview(const Photo &photo, const Slide &slide);
+	static int preview(const Photo &p1, const Photo &p2, const Slide &s);
 	static int score(const V_ULONG &t1, const V_ULONG &t2);
 	string toString() const;
 

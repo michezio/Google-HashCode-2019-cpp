@@ -30,7 +30,7 @@ vector<Photo> generatePhotoList(const string &inputPath)
 	for (ULONG i = 0; i < number_of_photos; ++i)
 	{
 		getline(inputFile, line);
-		photos.push_back(Photo(i, line));
+		photos.emplace_back(i, line);
 		PRINT_PROGRESS(processed, number_of_photos);
 		processed++;
 	}
@@ -38,7 +38,7 @@ vector<Photo> generatePhotoList(const string &inputPath)
 	sort(photos.begin(), photos.end(),
 		[](Photo const &L, Photo const &R)
 		{ 
-			return L.tags.size() <= R.tags.size();
+			return L.tags.size() < R.tags.size();
 		}
 	);
 	CLEAR_LINE;
@@ -55,32 +55,35 @@ vector<Slide> generateSlideshow(vector<Photo> &photos)
 	ULONG processed = 0;
 	vector<Slide> slideshow;
 	slideshow.reserve(photos.size());
-	Slide *last = nullptr;
+	Photo *ph1 = nullptr;
+	Photo *ph2 = nullptr;
 	for (ULONG i = 0; i < photos.size(); ++i)
 	{
 		if (photos[i].isHorizontal)
 		{
-			last = new Slide(photos[i]);
+			ph1 = &photos[i];
 			photos[i].used = true;
 			processed++;
+			slideshow.emplace_back(*ph1);
 			break;
 		}
 	}
-	if (last == nullptr)
+	if (ph1 == nullptr)
 	{
-		last = new Slide(photos[0]);
+		ph1 = &photos[0];
 		photos[0].used = true;
-		last->addVertical(photos[1]);
+		ph2 = &photos[1];
 		photos[1].used = true;
 		processed += 2;
+		slideshow.emplace_back(*ph1, *ph2);
 	}
-	slideshow.push_back(*last);
 	while (processed < photos.size())
 	{
 		PRINT_PROGRESS(processed, photos.size());
 		int points = -1;
-		Photo *selected = nullptr;
-		for (unsigned int i = 0; i < photos.size(); ++i)
+		Slide *last = &slideshow.at(slideshow.size() - 1);
+		ph1 = ph2 = nullptr;
+		for (ULONG i = 0; i < photos.size(); ++i)
 		{
 			if (photos[i].used)
 				continue;
@@ -88,40 +91,40 @@ vector<Slide> generateSlideshow(vector<Photo> &photos)
 			if (new_points > points)
 			{
 				points = new_points;
-				selected = &photos[i];
+				ph1 = &photos[i];
 			}
 		}
-		if (selected)
+		if (ph1)
 		{
-			last = new Slide(*selected);
-			selected->used = true;
-			if (selected->isHorizontal)
+			ph1->used = true;
+			if (ph1->isHorizontal)
+			{
+				slideshow.emplace_back(*ph1);
 				processed++;
+			}
 			else
 			{
-				Photo *match = nullptr;
 				int best_delta = -1000;
-				for (unsigned int i = 0; i < photos.size(); ++i)
+				for (UINT i = 0; i < photos.size(); ++i)
 				{
 					if (photos[i].used || photos[i].isHorizontal)
 						continue;
-					int delta = last->preview(photos[i], slideshow[slideshow.size() - 1]) - points;
+					int delta = Slide::preview(*ph1, photos[i], slideshow[slideshow.size() - 1]) - points;
 					if (delta > best_delta)
 					{
 						best_delta = delta;
-						match = &photos[i];
+						ph2 = &photos[i];
 					}
 				}
-				if (match)
+				if (ph2)
 				{
 					points += best_delta;
-					last->addVertical(*match);
-					match->used = true;
+					ph2->used = true;
+					slideshow.emplace_back(*ph1, *ph2);
 					processed += 2;
 				}
 			}
 			slideshow[slideshow.size() - 1].points = points;
-			slideshow.push_back(*last);
 		}
 	}
 	CLEAR_LINE;

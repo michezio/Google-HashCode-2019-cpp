@@ -122,6 +122,15 @@ int Slide::preview(const Photo &photo, const Slide &slide)
 	return Slide::score(Slide::mergeTags(this->tags, photo.tags), slide.tags);
 }
 
+int Slide::preview(const Photo &p1, const Photo &p2, const Slide &s)
+{
+	V_ULONG merged = Slide::mergeTags(p1.tags, p2.tags);
+	UINT int_size = Slide::intersectionSize(merged, s.tags);
+	if (int_size == 0) return 0;
+	UINT min_size = (UINT)(min(merged.size(), s.tags.size()));
+	return min(int_size, min_size - int_size);
+}
+
 int Slide::score(const V_ULONG &t1, const V_ULONG &t2)
 {
 	UINT int_size = Slide::intersectionSize(t1, t2);
