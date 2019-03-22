@@ -67,12 +67,14 @@ V_ULONG Slide::mergeTags(const V_ULONG &t1, const V_ULONG &t2)
 	{
 		ULONG a = t1[index_a];
 		ULONG b = t2[index_b];
-		if (a <= b) {
+		if (a <= b)
+		{
 			merged.push_back(a);
 			index_a++;
 			if (a == b) index_b++;
 		}
-		else {
+		else
+		{
 			merged.push_back(b);
 			index_b++;
 		}
@@ -98,14 +100,17 @@ int Slide::intersectionSize(const V_ULONG &v1, const V_ULONG &v2)
 	{
 		ULONG a = v1[index_a];
 		ULONG b = v2[index_b];
-		if (a <= b) {
+		if (a <= b)
+		{
 			index_a++;
-			if (a == b) {
+			if (a == b)
+			{
 				index_b++;
 				equals++;
 			}
 		}
-		else {
+		else
+		{
 			index_b++;
 		}
 	}
@@ -129,6 +134,54 @@ int Slide::preview(const Photo &p1, const Photo &p2, const Slide &s)
 	if (int_size == 0) return 0;
 	UINT min_size = (UINT)(min(merged.size(), s.tags.size()));
 	return min(int_size, min_size - int_size);
+}
+
+UINT Slide::previewScore(const Photo &p1, const Photo &p2, const Slide &s)
+{
+	UINT index_a = 0;
+	UINT index_b = 0;
+	UINT index_c = 0;
+	UINT size = 0;
+	UINT equals = 0;
+	while (index_a < p1.tags.size() && index_b < p2.tags.size() && index_c < s.tags.size())
+	{
+		ULONG a = p1.tags[index_a];
+		ULONG b = p2.tags[index_b];
+		ULONG selected;
+		if (a <= b)
+		{
+			selected = a;
+			index_a++;
+			if (a == b) index_b++;
+		}
+		else
+		{
+			selected = b;
+			index_b++;
+		}
+		size++;
+
+		while (s.tags[index_c] < selected && index_c < s.tags.size())
+			index_c++;
+		if (s.tags[index_c] == selected) equals++;
+	}
+	while (index_a < p1.tags.size())
+	{
+		size++;
+		while (s.tags[index_c] < p1.tags[index_a] && index_c < s.tags.size())
+			index_c++;
+		if (s.tags[index_c] == p1.tags[index_a]) equals++;
+		index_a++;
+	}
+	while (index_b < p2.tags.size())
+	{
+		size++;
+		while (s.tags[index_c] < p2.tags[index_b] && index_c < s.tags.size())
+			index_c++;
+		if (s.tags[index_c] == p2.tags[index_b]) equals++;
+		index_b++;
+	}
+	return min(equals, min(size, s.tags.size()) - equals);
 }
 
 int Slide::score(const V_ULONG &t1, const V_ULONG &t2)

@@ -109,7 +109,7 @@ vector<Slide> generateSlideshow(vector<Photo> &photos)
 				{
 					if (photos[i].used || photos[i].isHorizontal)
 						continue;
-					int delta = Slide::preview(*ph1, photos[i], slideshow[slideshow.size() - 1]) - points;
+					int delta = Slide::previewScore(*ph1, photos[i], slideshow[slideshow.size() - 1]) - points;
 					if (delta > best_delta)
 					{
 						best_delta = delta;
