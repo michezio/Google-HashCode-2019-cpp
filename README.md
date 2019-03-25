@@ -22,11 +22,11 @@ We used many different versions of the algorithm, this is what we submitted vs t
 
 Here the ranking at the end of Extended Round
 
-| Group                                            | Rank/Total |
-| ------------------------------------------------ | ---------- |
-| Italy / Politecnico di Bari (hosted by GDG Bari) | 2 / 5      |
-| Italy                                            | 6 / 209    |
-| World                                            | 65 / 2924  |
+| Group                                            | Rank / Total |
+| ------------------------------------------------ | ------------ |
+| Italy / Politecnico di Bari (hosted by GDG Bari) | 2 / 5        |
+| Italy                                            | 6 / 209      |
+| World                                            | 65 / 2924    |
 
 Team name: **SicroMoft**
 
